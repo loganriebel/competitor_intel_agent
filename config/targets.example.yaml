@@ -1,0 +1,45 @@
+# Competitor Intelligence Agent — Target Configuration
+# Copy this file to config/targets.yaml and fill in your values.
+# config/targets.yaml is gitignored — your real competitor list stays private.
+
+competitors:
+  - domain: competitor-a.com
+    pricing_path: /pricing          # Path to their pricing page (omit to skip pricing check)
+  - domain: competitor-b.com
+    pricing_path: /plans
+  - domain: competitor-c.com
+    pricing_path: /pricing
+  - domain: competitor-d.com
+    # pricing_path omitted — pricing check skipped for this domain
+  - domain: competitor-e.com
+    pricing_path: /pricing
+
+# ICP (Ideal Customer Profile) definition.
+# Stage 03 scores every piece of competitor content against this.
+# Be specific — vague ICPs produce vague scores.
+icp:
+  role: "B2B SaaS marketing manager at a 10–200 person company"
+  pain_points:
+    - "proving content ROI to leadership"
+    - "competing with larger budgets"
+    - "keeping up with competitor positioning changes"
+    - "finding content ideas that actually convert"
+  content_that_resonates:
+    - "case studies with specific metrics and named outcomes"
+    - "competitor comparison posts and alternatives pages"
+    - "workflow and how-to guides for their specific stack"
+    - "data-backed trend reports"
+  content_that_does_not_resonate:
+    - "company news and press releases"
+    - "broad thought leadership without actionable takeaways"
+    - "product update announcements"
+
+# Optional: brand voice notes used in stage 04 idea generation.
+# Add a sentence or two describing your tone and positioning.
+brand_voice: >
+  Direct, data-driven, and practitioner-focused. We write for people who
+  run the campaigns, not people who approve them. No fluff, always actionable.
+
+# Output configuration
+output_dir: "outputs/"
+snapshot_dir: "last_run/"

@@ -1,0 +1,24 @@
+# Real config (targets.yaml contains your actual competitor domains — keep private)
+config/targets.yaml
+
+# Stage artifacts (rebuilt each run; not useful in git history)
+last_run/new_urls.json
+last_run/summaries.json
+last_run/scored.json
+last_run/ideas.json
+last_run/pricing_diff.json
+
+# Domain snapshots are worth keeping in git history — they're the audit log
+# Uncomment the lines below if you'd prefer to exclude them:
+# last_run/*-sitemap.json
+# last_run/*-pricing.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
