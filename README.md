@@ -1,8 +1,8 @@
 # competitor_intel_agent
 
-> A Claude Code agent that watches up to 5 competitor domains every morning — detecting new content, scoring it against your ICP, generating content ideas, and flagging pricing changes — then drops a structured report before your first coffee.
+> An autonomous AI agent that watches up to 5 competitor domains every morning — detecting new content, scoring it against your ICP, generating content ideas, and flagging pricing changes — then drops a structured report before your first coffee.
 
-Built as part of my [AI agent portfolio](https://github.com/loganriebel). Runs daily at 6am CST via [Hermes](#hermes-scheduling), a thin Claude Code skill invoked by system cron. Companion to [seo_agent_pipeline](https://github.com/loganriebel/seo_agent_pipeline).
+Built as part of my [AI agent portfolio](https://github.com/loganriebel). Runs daily at 6am CST via [Hermes](https://hermes-agent.nousresearch.com/) (Nous Research's autonomous agent with a built-in cron scheduler). Companion to [seo_agent_pipeline](https://github.com/loganriebel/seo_agent_pipeline).
 
 ---
 
@@ -64,10 +64,10 @@ Each stage writes a JSON artifact. The orchestrator reads the previous artifact 
 
 ## Stack
 
-- **Claude Code** (agent mode) · Claude Sonnet 4.6
+- **[Hermes](https://hermes-agent.nousresearch.com/)** (Nous Research) — autonomous agent runtime with built-in cron scheduler; runs the pipeline daily at 6am CST
+- **OpenRouter** — LLM routing; Hermes routes inference requests through OpenRouter
 - **Python 3.10+** — sitemap fetching (`requests` + `xml.etree`), HTML → plain text (`markdownify`), snapshot diffing
-- **YAML config** — all domain targets, ICP definition, and output paths in one file; no hardcoding in skill files
-- **Hermes skill** — Claude Code skill invoked by system cron: `0 12 * * * claude -p "/hermes-competitor-intel"` *(12:00 UTC = 6am CST)*
+- **YAML config** — all domain targets, ICP definition, and output paths in one file; no hardcoding in stage files
 
 ---
 
@@ -98,13 +98,9 @@ competitor_intel_agent/
 
 ## Hermes scheduling
 
-Hermes is a Claude Code skill — not a daemon or service. A single cron line invokes it:
+[Hermes](https://hermes-agent.nousresearch.com/) is an autonomous AI agent by Nous Research with a built-in cron scheduler that ticks every 60 seconds and executes due jobs in isolated agent sessions.
 
-```bash
-0 12 * * * cd /path/to/competitor_intel_agent && claude -p "/hermes-competitor-intel"
-```
-
-The `hermes/daily-run.md` skill clears stale stage artifacts, invokes `/competitor-intel`, and writes the final report. Scheduling concerns live in Hermes; pipeline logic lives in the stage files. Swapping from daily to twice-daily means updating one cron expression.
+The `hermes/daily-run.md` file defines the cron job: what to clear, what to run, and how to deliver the report. Scheduling concerns live in Hermes; pipeline logic lives in the stage files. Swapping from daily to twice-daily means changing the schedule in Hermes, not touching any pipeline code.
 
 ---
 
@@ -112,7 +108,7 @@ The `hermes/daily-run.md` skill clears stale stage artifacts, invokes `/competit
 
 1. Fork the repo
 2. `cp config/targets.example.yaml config/targets.yaml` — fill in your domains and ICP definition
-3. Set up the cron job: `0 12 * * * cd /path/to/repo && claude -p "/hermes-competitor-intel"`
+3. Create a Hermes cron job pointing at `hermes/daily-run.md`, scheduled for 6am your timezone
 4. Optionally adjust ICP scoring thresholds in `skills/stages/03-icp-score.md`
 
 The agent becomes significantly more useful with additional context: your existing content inventory, brand voice, and GSC performance data can all feed into the ICP scoring and idea generation stages.
@@ -121,6 +117,6 @@ The agent becomes significantly more useful with additional context: your existi
 
 ## Requirements
 
-- Claude Code (agent mode)
+- [Hermes](https://hermes-agent.nousresearch.com/) with an OpenRouter API key
 - Python 3.10+
 - `pip install requests markdownify pyyaml`

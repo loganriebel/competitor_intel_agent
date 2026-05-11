@@ -56,18 +56,14 @@ This means a network timeout during stage 02 resumes from stage 02 on the next r
 
 ## Hermes scheduling model
 
-Hermes is a Claude Code skill invoked by system cron — not a daemon or service. The system cron line:
+[Hermes](https://hermes-agent.nousresearch.com/) is an autonomous AI agent by Nous Research with a built-in cron scheduler. It ticks every 60 seconds, executes due jobs in isolated agent sessions, and uses OpenRouter for LLM routing. No system cron or daemon required.
 
-```bash
-0 12 * * * cd /path/to/competitor_intel_agent && claude -p "/hermes-competitor-intel"
-```
-
-The `hermes/daily-run.md` skill has three responsibilities:
+The `hermes/daily-run.md` file defines what the Hermes job does each morning:
 1. **Guard** — confirm `config/targets.yaml` is present and non-empty
 2. **Clear** — delete stage artifacts from the previous run (preserving domain snapshots)
-3. **Delegate** — invoke `/competitor-intel` and write the final report
+3. **Delegate** — load the pipeline skills and run the orchestrator
 
-Hermes is intentionally thin. All pipeline logic — stage sequencing, resume detection, artifact chaining — lives in `skills/competitor-intel.md` and its stage files. Changing the schedule means updating one cron expression. Adding a Slack notification means one line in `hermes/daily-run.md`. Neither change touches the pipeline.
+All pipeline logic — stage sequencing, resume detection, artifact chaining — lives in `skills/competitor-intel.md` and its stage files. Changing the schedule means updating it in Hermes. Adding a notification means one line in `hermes/daily-run.md`. Neither change touches the pipeline.
 
 ---
 
