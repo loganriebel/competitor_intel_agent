@@ -120,3 +120,5 @@ The agent becomes significantly more useful with additional context: your existi
 - [Hermes](https://hermes-agent.nousresearch.com/) with an OpenRouter API key
 - Python 3.10+
 - `pip install requests markdownify pyyaml`
+  
+Interested in doing this for your business or looking to add powerful AI GTM flows? Email me at loganriebel@gmail.com or connect with me at https://www.linkedin.com/in/logan-riebel/
